@@ -38,6 +38,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //Kotlin specific
     implementation "androidx.core:core-ktx:$ktx_version"
+    implementation "org.jetbrains.anko:anko-commons:0.10.5"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     //Room components
