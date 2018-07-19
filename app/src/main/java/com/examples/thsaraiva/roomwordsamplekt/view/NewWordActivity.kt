@@ -22,7 +22,7 @@ class NewWordActivity : AppCompatActivity() {
                 setResult(RESULT_CANCELED)
             else {
                 val resultIntent = Intent()
-                intent.putExtra(NEW_WORD, edit_word.text)
+                resultIntent.putExtra(NEW_WORD, edit_word.text.toString())
                 setResult(Activity.RESULT_OK, resultIntent)
             }
             finish()

@@ -12,7 +12,7 @@ abstract class WordRoomDatabase : RoomDatabase() {
 
     companion object {
         private const val DB_NAME = "wordRoom.db"
-        private lateinit var INSTANCE: WordRoomDatabase
+        private var INSTANCE: WordRoomDatabase? = null
 
         fun getInstance(ctx: Context): WordRoomDatabase {
             if (INSTANCE == null) {
@@ -24,7 +24,7 @@ abstract class WordRoomDatabase : RoomDatabase() {
                     }
                 }
             }
-            return INSTANCE
+            return INSTANCE ?: throw RuntimeException("Fatal Error. Did not create database.")
         }
     }
 }
