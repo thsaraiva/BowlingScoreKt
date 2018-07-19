@@ -1,0 +1,61 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+repositories {
+    google()
+}
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.examples.thsaraiva.roomwordsamplekt"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+
+    def kotlin_version = '1.2.51'
+    def room_version = '2.0.0-beta01'
+    def arch_lifecycle_version = '2.0.0-beta01'
+    def ktx_version = '1.0.0-beta01'
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //Kotlin specific
+    implementation "androidx.core:core-ktx:$ktx_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    //Room components
+    implementation "androidx.room:room-runtime:$room_version"
+    // optional - RxJava support for Room
+    implementation "androidx.room:room-rxjava2:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    androidTestImplementation "androidx.room:room-testing:$room_version"
+
+    //LifeCycle Components
+    implementation "androidx.lifecycle:lifecycle-extensions:$arch_lifecycle_version"
+    kapt "androidx.lifecycle:lifecycle-compiler:$arch_lifecycle_version"
+
+    //Support Library
+    implementation "com.google.android.material:material:1.0.0-beta01"
+    implementation "androidx.constraintlayout:constraintlayout:1.1.2"
+    implementation "androidx.appcompat:appcompat:1.0.0-beta01"
+
+    //Test Dependencies
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
