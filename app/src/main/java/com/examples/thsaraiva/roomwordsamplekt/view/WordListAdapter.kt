@@ -19,12 +19,11 @@ class WordListAdapter : RecyclerView.Adapter<WordListAdapter.WordItemViewHolder>
     }
 
     override fun getItemCount(): Int {
-        return wordList?.count()
+        return wordList.count()
     }
 
     override fun onBindViewHolder(holder: WordListAdapter.WordItemViewHolder, position: Int) {
-        val word = wordList?.get(position)
-        if (word != null) holder.bind(word) else holder.showNoDataPlaceHolder()
+        holder.bind(wordList[position])
     }
 
     fun setWords(newWordList: List<Word>) {

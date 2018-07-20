@@ -1,27 +1,25 @@
 package com.examples.thsaraiva.roomwordsamplekt.data.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
+import androidx.room.OnConflictStrategy.REPLACE
 import com.examples.thsaraiva.roomwordsamplekt.data.Word
 
 @Dao
 interface WordDao {
-    @Insert
+
+    @Insert(onConflict = REPLACE)
     fun insert(word: Word)
 
     @Query("DELETE FROM ${Word.TABLE_NAME}")
     fun deleteAll()
 
-    @Query("SELECT * FROM ${Word.TABLE_NAME} order by ${Word.WORD_COLUMN_NAME} ASC")
+    @Query("SELECT * FROM ${Word.TABLE_NAME} order by ${Word.LENGTH_COLUMN_NAME} ASC")
     fun getAllWords(): List<Word>
 
-    //TODO: implement delete and update later
-//    @Delete
-//    fun delete(word: Word)
-//
-//    @Update
-//    fun update(word: Word)
+    @Delete
+    fun delete(word: Word)
 
+    @Update
+    fun update(word: Word)
 
 }

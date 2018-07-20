@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity(), WordRepository.GetWordsCallback {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == NEW_WORD_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val result = data!!.getStringExtra(NewWordActivity.NEW_WORD)
-            val newWord = Word(result)
+            val newWord = Word(word = result)
             wordViewModel.insert(newWord)
             toast(R.string.word_saved)
             wordViewModel.getAllWords(this)
