@@ -34,12 +34,17 @@ dependencies {
     def room_version = '2.0.0-beta01'
     def arch_lifecycle_version = '2.0.0-beta01'
     def ktx_version = '1.0.0-beta01'
+    def dagger2_version = '2.16'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //Kotlin specific
     implementation "androidx.core:core-ktx:$ktx_version"
     implementation "org.jetbrains.anko:anko-commons:0.10.5"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    //Dagger2
+    implementation "com.google.dagger:dagger:$dagger2_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger2_version"
 
     //Room components
     implementation "androidx.room:room-runtime:$room_version"
