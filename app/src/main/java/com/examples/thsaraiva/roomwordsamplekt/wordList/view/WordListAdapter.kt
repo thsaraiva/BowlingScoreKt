@@ -1,4 +1,4 @@
-package com.examples.thsaraiva.roomwordsamplekt.view
+package com.examples.thsaraiva.roomwordsamplekt.wordList.view
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.examples.thsaraiva.roomwordsamplekt.R
-import com.examples.thsaraiva.roomwordsamplekt.data.Word
+import com.examples.thsaraiva.roomwordsamplekt.wordList.repository.dataSource.Word
 
 class WordListAdapter : RecyclerView.Adapter<WordListAdapter.WordItemViewHolder>() {
 

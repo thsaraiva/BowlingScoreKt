@@ -1,6 +1,8 @@
 package com.examples.thsaraiva.roomwordsamplekt
 
 import io.reactivex.Observable
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
 import org.junit.Test
 
 /**
@@ -22,12 +24,31 @@ class ExampleUnitTest {
                     }
                 }
 //                .flatMap { frame -> Observable.just(frame.pointsBall1, frame.pointsBall2) }
-                .scan { last: Play, next: Play -> next + last }
-                .subscribe {
-                    println(it)
-                }
+//                .scan { last: Play, next: Play -> next + last }
+                .subscribe()
 
     }
+}
+
+//TODO: receber eventos no Observer e pra cada strike, sobar o valor das proximas 3 bolas, pra cada spare, dobrar o valor da proxima bola
+
+class MyObserver : Observer<Play> {
+    override fun onComplete() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onSubscribe(d: Disposable?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onNext(t: Play?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onError(e: Throwable?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
 }
 
 class Play(ball1: Char, ball2: Char) {

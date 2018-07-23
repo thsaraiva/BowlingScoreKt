@@ -1,4 +1,4 @@
-package com.examples.thsaraiva.roomwordsamplekt.data
+package com.examples.thsaraiva.roomwordsamplekt.wordList.repository.dataSource
 
 import android.content.Context
 import androidx.room.Database
@@ -6,7 +6,6 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.examples.thsaraiva.roomwordsamplekt.data.dao.WordDao
 
 @Database(entities = [(Word::class)], version = 2)
 abstract class WordRoomDatabase : RoomDatabase() {
@@ -47,11 +46,12 @@ abstract class WordRoomDatabase : RoomDatabase() {
                     if (INSTANCE == null) {
                         INSTANCE = Room.databaseBuilder(ctx.applicationContext,
                                 WordRoomDatabase::class.java,
-                                WordRoomDatabase.DB_NAME).addMigrations(WordRoomDatabase.MIGRATION_1_2).build()
+                                DB_NAME).addMigrations(MIGRATION_1_2).build()
                     }
                 }
             }
-            return INSTANCE ?: throw RuntimeException("Fatal Error. Did not create database.")
+            return INSTANCE
+                    ?: throw RuntimeException("Fatal Error. Did not create database.")
         }
     }
 }

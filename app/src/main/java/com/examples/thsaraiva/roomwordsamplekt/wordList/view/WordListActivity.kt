@@ -1,4 +1,4 @@
-package com.examples.thsaraiva.roomwordsamplekt.view
+package com.examples.thsaraiva.roomwordsamplekt.wordList.view
 
 import android.app.Activity
 import android.content.Intent
@@ -6,38 +6,48 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.examples.thsaraiva.roomwordsamplekt.R
-import com.examples.thsaraiva.roomwordsamplekt.data.Word
-import com.examples.thsaraiva.roomwordsamplekt.data.repository.WordRepository
-import com.examples.thsaraiva.roomwordsamplekt.viewmodel.WordViewModel
-import kotlinx.android.synthetic.main.activity_main.*
+import com.examples.thsaraiva.roomwordsamplekt.addNewWord.view.NewWordActivity
+import com.examples.thsaraiva.roomwordsamplekt.wordList.di.DaggerWordListComponent
+import com.examples.thsaraiva.roomwordsamplekt.wordList.di.WordListModule
+import com.examples.thsaraiva.roomwordsamplekt.wordList.repository.dataSource.Word
+import com.examples.thsaraiva.roomwordsamplekt.wordList.viewmodel.WordListViewModel
+import kotlinx.android.synthetic.main.word_list_activity_layout.*
 import org.jetbrains.anko.longToast
 import org.jetbrains.anko.toast
+import javax.inject.Inject
 
 
-class MainActivity : AppCompatActivity(), WordRepository.GetWordsCallback {
+class WordListActivity : AppCompatActivity() {
     companion object {
         private const val NEW_WORD_ACTIVITY_REQUEST_CODE = 1
     }
 
-    private lateinit var wordViewModel: WordViewModel
+    @Inject
+    lateinit var wordViewModel: WordListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.word_list_activity_layout)
         setSupportActionBar(toolbar)
 
-        wordViewModel = ViewModelProviders.of(this).get(WordViewModel::class.java)
+        val wordListComponent = DaggerWordListComponent.builder()
+                .wordListModule(WordListModule(this))
+                .build()
+
+        wordListComponent.inject(this)
+
+        wordViewModel.getAllWords().observe(this, Observer { (wordsRecyclerView.adapter as WordListAdapter).setWords(it) })
 
         wordsRecyclerView.layoutManager = LinearLayoutManager(this)
         wordsRecyclerView.adapter = WordListAdapter()
-        wordViewModel.getAllWords(this)
 
         fab.setOnClickListener {
-            startActivityForResult(Intent(this@MainActivity, NewWordActivity::class.java), NEW_WORD_ACTIVITY_REQUEST_CODE)
+            startActivityForResult(Intent(this@WordListActivity, NewWordActivity::class.java), NEW_WORD_ACTIVITY_REQUEST_CODE)
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -63,13 +73,8 @@ class MainActivity : AppCompatActivity(), WordRepository.GetWordsCallback {
             val newWord = Word(word = result)
             wordViewModel.insert(newWord)
             toast(R.string.word_saved)
-            wordViewModel.getAllWords(this)
         } else {
             longToast(R.string.empty_not_saved)
         }
-    }
-
-    override fun onResult(wordList: List<Word>) {
-        (wordsRecyclerView.adapter as WordListAdapter).setWords(wordList)
     }
 }

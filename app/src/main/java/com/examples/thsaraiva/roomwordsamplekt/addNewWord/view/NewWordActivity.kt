@@ -1,4 +1,4 @@
-package com.examples.thsaraiva.roomwordsamplekt.view
+package com.examples.thsaraiva.roomwordsamplekt.addNewWord.view
 
 import android.app.Activity
 import android.content.Intent
