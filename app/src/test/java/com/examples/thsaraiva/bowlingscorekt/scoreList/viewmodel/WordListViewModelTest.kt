@@ -3,7 +3,7 @@ package com.examples.thsaraiva.bowlingscorekt.scoreList.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.examples.thsaraiva.bowlingscorekt.scoreList.repository.ScoreListRepository
-import com.examples.thsaraiva.bowlingscorekt.scoreList.repository.dataSource.Word
+import com.examples.thsaraiva.bowlingscorekt.scoreList.repository.dataSource.Score
 import com.nhaarman.mockitokotlin2.*
 import org.junit.Rule
 import org.junit.Test
@@ -20,7 +20,7 @@ class WordListViewModelTest {
     @Test
     fun testGetAllWords_NoResults() {
         repository = mock()
-        val wordListObserver = mock() as Observer<List<Word>>
+        val wordListObserver = mock() as Observer<List<Score>>
         val noDataAvailableObserver = mock() as Observer<Boolean>
 
         with(ScoreListViewModel(repository)) {
@@ -47,7 +47,7 @@ class WordListViewModelTest {
     @Test
     fun testGetAllWords_WithResults() {
         repository = mock()
-        val wordListObserver = mock() as Observer<List<Word>>
+        val wordListObserver = mock() as Observer<List<Score>>
         val noDataAvailableObserver = mock() as Observer<Boolean>
 
         with(ScoreListViewModel(repository)) {
@@ -59,7 +59,7 @@ class WordListViewModelTest {
 
         argumentCaptor<ScoreListRepository.LoadScoresCallback> {
             verify(repository, times(1)).getAllWords(capture())
-            val expectedList = listOf(Word(word = "Teste"))
+            val expectedList = listOf(Score(score = "Teste", computedScore = 300))
             this.firstValue.onWordsLoaded(expectedList)
             verify(noDataAvailableObserver, never()).onChanged(any())
             verify(wordListObserver, times(1)).onChanged(expectedList)
@@ -73,12 +73,12 @@ class WordListViewModelTest {
     }
 
     @Test
-    fun `inserting word in database should invoke getAllWords method`() {
+    fun `inserting Score in database should invoke getAllWords method`() {
         repository = mock()
-        val wordListObserver = mock() as Observer<List<Word>>
+        val wordListObserver = mock() as Observer<List<Score>>
         val noDataAvailableObserver = mock() as Observer<Boolean>
 
-        val expectedWord = Word(word = "Teste")
+        val expectedWord = Score(score = "Teste", computedScore = 300)
         with(ScoreListViewModel(repository)) {
             viewModel = this
             scoreList.observeForever(wordListObserver)

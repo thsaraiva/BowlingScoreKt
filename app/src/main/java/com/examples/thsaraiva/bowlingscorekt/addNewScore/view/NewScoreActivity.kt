@@ -20,6 +20,8 @@ class NewScoreActivity : AppCompatActivity(), View.OnClickListener {
 
     private var lastComputedScore: NewScore? = null
 
+    private val scoreParser = ScoreParser()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.add_score_activity)
@@ -48,7 +50,7 @@ class NewScoreActivity : AppCompatActivity(), View.OnClickListener {
         calculateBtn.setOnClickListener {
             val scoreString = scoreEditText.text.toString()
             if (!scoreString.isEmpty()) {
-                val calculatedScore = ScoreParser.computeScore(scoreString)
+                val calculatedScore = scoreParser.getScore(scoreString)
                 lastComputedScore = NewScore(scoreString, calculatedScore)
                 resultScoreLabel.text = getString(R.string.total_score_label, calculatedScore)
                 resultLayout.visibility = View.VISIBLE
