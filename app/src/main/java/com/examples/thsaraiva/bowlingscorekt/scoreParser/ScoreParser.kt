@@ -3,10 +3,89 @@ package main
 import main.model.NormalFrame
 import main.model.SpareFrame
 import main.model.StrikeFrame
-import main.util.getIntValue
-import main.util.isSpare
-import main.util.isStrike
-import main.util.second
+import main.util.*
+
+open class BaseScoreParser {
+    protected lateinit var trimmedScore: String
+    private lateinit var mainScore: String
+    private lateinit var extraBalls: String
+
+    protected open fun initialParsing(score: String) {
+        trimmedScore = score.replace(" ", "", true)
+        mainScore = trimmedScore.substringBefore("||")
+        extraBalls = trimmedScore.substringAfter("||")
+    }
+}
+
+class ScoreParserArray : BaseScoreParser() {
+    private lateinit var ballsArray: CharArray
+    private var extraBallsNumber = 0
+
+    override fun initialParsing(score: String) {
+        trimmedScore = score.replace(" ", "", true)
+        extraBallsNumber = trimmedScore.substringAfter("||").length
+        ballsArray = trimmedScore.replace("||", "", true)
+                .replace("|", "", true).toCharArray()
+    }
+
+    fun getScore(score: String): Int {
+        initialParsing(score)
+        var frameSum = 0
+
+        for (i in 0 until ballsArray.size - extraBallsNumber) {
+            with(ballsArray[i]) {
+                when {
+                    this.isStrike() -> {
+                        frameSum += this.getIntValue()
+                        frameSum += getNextBall(i)
+                        frameSum += getBallAfterNext(i)
+                    }
+                    this.isSpare() -> {
+                        frameSum += 10 - getLastBall(i)
+                        frameSum += getNextBall(i)
+                    }
+                    else -> frameSum += this.getIntValue()
+                }
+            }
+        }
+
+        return frameSum
+    }
+
+    private fun getLastBall(position: Int): Int {
+        val lastPosition = position - 1
+        return if (lastPosition >= 0)
+            when {
+                ballsArray[lastPosition].isMiss() -> 0
+                else -> ballsArray[lastPosition].getIntValue()
+            }
+        else
+            0
+    }
+
+    private fun getNextBall(position: Int): Int {
+        val nextPosition = position + 1
+        return if (nextPosition <= ballsArray.size - 1)
+            when {
+                ballsArray[nextPosition].isMiss() -> 0
+                else -> ballsArray[nextPosition].getIntValue()
+            }
+        else
+            0
+    }
+
+    private fun getBallAfterNext(position: Int): Int {
+        val afterNextPosition = position + 2
+        return if (afterNextPosition <= ballsArray.size - 1) {
+            when {
+                ballsArray[afterNextPosition].isSpare() -> 10 - ballsArray[afterNextPosition - 1].getIntValue()
+                ballsArray[afterNextPosition].isMiss() -> 0
+                else -> ballsArray[afterNextPosition].getIntValue()
+            }
+        } else
+            0
+    }
+}
 
 class ScoreParser {
 

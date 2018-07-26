@@ -1,6 +1,7 @@
 package test
 
 import main.ScoreParser
+import main.ScoreParserArray
 import main.ScoreParserReverse
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -10,11 +11,13 @@ class ScoreParserTest {
 
     private lateinit var scoreParser: ScoreParser
     private lateinit var scoreParserReverse: ScoreParserReverse
+    private lateinit var scoreParserArray: ScoreParserArray
 
     @Before
     fun beforeTest() {
         scoreParser = ScoreParser()
         scoreParserReverse = ScoreParserReverse()
+        scoreParserArray = ScoreParserArray()
     }
 
     @Test
@@ -89,7 +92,7 @@ class ScoreParserTest {
         assertEquals(expectedResult, finalScore)
     }
 
-    //################ REVERSE ALGORITHM
+    //################ REVERSE ALGORITHM ################
 
     @Test
     fun parsingRandomScoreGame_Reverse() {
@@ -163,4 +166,61 @@ class ScoreParserTest {
         assertEquals(expectedResult, finalScore)
     }
 
+    @Test
+    fun parsingScoreWithStrikesScoreGame_Reverse() {
+        val framesResults = "X|11|11|X|11|11|11|11|11|X||XX"
+        val expectedResult = 68
+        val finalScore = scoreParserReverse.getScore(framesResults)
+        assertEquals(expectedResult, finalScore)
+    }
+
+    //################ ARRAY ALGORITHM ################
+
+    @Test
+    fun parsingSimpleScoreGame_Array() {
+        val framesResults = "54|54|54|54|54|54|54|54|54|54||"
+        val expectedResult = 90
+        val finalScore = scoreParserArray.getScore(framesResults)
+        assertEquals(expectedResult, finalScore)
+    }
+
+    @Test
+    fun parsingOnly5sAndMissesScoreGame_Array() {
+        val framesResults = "5-|5-|5-|5-|5-|5-|5-|5-|5-|5-||"
+        val expectedResult = 50
+        val finalScore = scoreParserArray.getScore(framesResults)
+        assertEquals(expectedResult, finalScore)
+    }
+
+    @Test
+    fun parsingScoreWithSparesScoreGame_Array() {
+        val framesResults = "5/|54|54|5/|54|54|54|54|54|5/||5"
+        val expectedResult = 108
+        val finalScore = scoreParserArray.getScore(framesResults)
+        assertEquals(expectedResult, finalScore)
+    }
+
+    @Test
+    fun parsingScoreWithStrikesScoreGame_Array() {
+        val framesResults = "X|11|11|X|11|11|11|11|11|X||X-"
+        val expectedResult = 58
+        val finalScore = scoreParserArray.getScore(framesResults)
+        assertEquals(expectedResult, finalScore)
+    }
+
+    @Test
+    fun parsingScoreWithStrikesAndSparesScoreGame_Array() {
+        val framesResults = "X|5/|5/|X|54|54|54|54|54|X||-/"
+        val expectedResult = 139
+        val finalScore = scoreParserArray.getScore(framesResults)
+        assertEquals(expectedResult, finalScore)
+    }
+
+    @Test
+    fun parsingScoreWithStrikesAndSparesAndMissesScoreGame_Array() {
+        val framesResults = "X|-/|X|--|5/|-/|X|X|X|X||12"
+        val expectedResult = 174
+        val finalScore = scoreParserArray.getScore(framesResults)
+        assertEquals(expectedResult, finalScore)
+    }
 }
