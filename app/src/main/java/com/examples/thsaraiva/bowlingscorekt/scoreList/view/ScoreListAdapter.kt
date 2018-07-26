@@ -3,7 +3,6 @@ package com.examples.thsaraiva.bowlingscorekt.scoreList.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.examples.thsaraiva.bowlingscorekt.R
@@ -11,10 +10,10 @@ import com.examples.thsaraiva.bowlingscorekt.scoreList.repository.dataSource.Sco
 
 class ScoreListAdapter : RecyclerView.Adapter<ScoreListAdapter.WordItemViewHolder>() {
 
-    private var wordList: List<Score> = ArrayList()
+    private var wordList: List<Score> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScoreListAdapter.WordItemViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_item, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.score_list_item_layout, parent, false)
         return ScoreListAdapter.WordItemViewHolder(itemView)
     }
 
@@ -33,20 +32,15 @@ class ScoreListAdapter : RecyclerView.Adapter<ScoreListAdapter.WordItemViewHolde
 
     class WordItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        private var wordTextView: TextView = view.findViewById(R.id.word_textview)
-        private var noResultsImageView: ImageView = view.findViewById(R.id.no_results_ic)
+        private var scoreString: TextView = view.findViewById(R.id.score_string)
+        private var computedScore: TextView = view.findViewById(R.id.computed_score)
 
         fun bind(score: Score) {
-            noResultsImageView.visibility = View.GONE
-            wordTextView.text = score.score
-            wordTextView.visibility = View.VISIBLE
+            with(scoreString) {
+                text = score.score
+                visibility = View.VISIBLE
+            }
+            computedScore.text = score.computedScore.toString()
         }
-
-        fun showNoDataPlaceHolder() {
-            wordTextView.visibility = View.GONE
-            noResultsImageView.visibility = View.VISIBLE
-
-        }
-
     }
 }

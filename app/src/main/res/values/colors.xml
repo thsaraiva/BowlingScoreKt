@@ -11,5 +11,8 @@
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#000000</color>
     <color name="defaultBackground">#F2F2F2</color>
+    <color name="cinder">#212C30</color>
+    <color name="white">#FFFFFF</color>
+    <color name="amber">#fff8e1</color>
 
 </resources>

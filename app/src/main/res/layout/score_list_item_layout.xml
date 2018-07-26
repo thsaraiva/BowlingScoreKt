@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:layout_marginBottom="2dp"
+    android:background="@color/amber"
+    android:orientation="horizontal"
+    android:paddingBottom="8dp"
+    android:paddingEnd="16dp"
+    android:paddingStart="16dp"
+    android:paddingTop="8dp">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="bottom"
+        android:src="@drawable/ic_bowling" />
+
+    <TextView
+        android:id="@+id/score_string"
+        style="@android:style/TextAppearance"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="16dp"
+        android:layout_weight="0.8"
+        android:lines="1"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        tools:text="X|X|X|X|X|X|X|X|X|X||XX" />
+
+    <TextView
+        android:id="@+id/computed_score"
+        style="@android:style/TextAppearance"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_weight="0.2"
+        android:gravity="end"
+        android:textSize="18sp"
+        tools:text="300" />
+</LinearLayout>

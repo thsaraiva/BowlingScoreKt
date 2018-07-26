@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        tools:listitem="@layout/recyclerview_item" />
+        tools:listitem="@layout/score_list_item_layout" />
 
     <TextView
         android:id="@+id/no_results_place_holder"

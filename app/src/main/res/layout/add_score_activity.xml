@@ -38,6 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:onClick="onClick"
                 android:text="7" />
 
             <com.google.android.material.button.MaterialButton
