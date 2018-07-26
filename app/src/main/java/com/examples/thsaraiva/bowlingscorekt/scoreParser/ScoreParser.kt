@@ -5,18 +5,6 @@ import main.model.SpareFrame
 import main.model.StrikeFrame
 import main.util.*
 
-open class BaseScoreParser {
-    protected lateinit var trimmedScore: String
-    private lateinit var mainScore: String
-    private lateinit var extraBalls: String
-
-    protected open fun initialParsing(score: String) {
-        trimmedScore = score.replace(" ", "", true)
-        mainScore = trimmedScore.substringBefore("||")
-        extraBalls = trimmedScore.substringAfter("||")
-    }
-}
-
 class ScoreParserArray : BaseScoreParser() {
     private lateinit var ballsArray: CharArray
     private var extraBallsNumber = 0
@@ -87,12 +75,10 @@ class ScoreParserArray : BaseScoreParser() {
     }
 }
 
-class ScoreParser {
+class ScoreParser : BaseScoreParser() {
 
     fun getScore(score: String): Int {
-        var trimmedScore = score.replace(" ", "", true)
-        var mainScore = trimmedScore.substringBefore("||")
-        var extraBalls = trimmedScore.substringAfter("||")
+        initialParsing(score)
 
         var framesList = mutableListOf<NormalFrame>()
 
@@ -153,12 +139,10 @@ class ScoreParser {
     }
 }
 
-class ScoreParserReverse {
+class ScoreParserReverse : BaseScoreParser() {
 
     fun getScore(score: String): Int {
-        var trimmedScore = score.replace(" ", "", true)
-        var mainScore = trimmedScore.substringBefore("||")
-        var extraBalls = trimmedScore.substringAfter("||")
+        initialParsing(score)
 
         var frameArray = arrayOfNulls<NormalFrame>(10)
         var currentPosition = frameArray.size - 1
@@ -215,4 +199,16 @@ class ScoreParserReverse {
         return frameArray.sumBy { it?.value ?: 0 }
     }
 
+}
+
+open class BaseScoreParser {
+    protected lateinit var trimmedScore: String
+    protected lateinit var mainScore: String
+    protected lateinit var extraBalls: String
+
+    protected open fun initialParsing(score: String) {
+        trimmedScore = score.replace(" ", "", true)
+        mainScore = trimmedScore.substringBefore("||")
+        extraBalls = trimmedScore.substringAfter("||")
+    }
 }

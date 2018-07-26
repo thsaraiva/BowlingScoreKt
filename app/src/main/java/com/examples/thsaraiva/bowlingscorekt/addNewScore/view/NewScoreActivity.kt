@@ -9,7 +9,7 @@ import com.examples.thsaraiva.bowlingscorekt.R
 import com.examples.thsaraiva.bowlingscorekt.addNewScore.model.NewScore
 import com.jakewharton.rxbinding.widget.RxTextView
 import kotlinx.android.synthetic.main.add_score_activity.*
-import main.ScoreParser
+import main.ScoreParserArray
 
 class NewScoreActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -20,7 +20,7 @@ class NewScoreActivity : AppCompatActivity(), View.OnClickListener {
 
     private var lastComputedScore: NewScore? = null
 
-    private val scoreParser = ScoreParser()
+    private val scoreParser = ScoreParserArray()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
