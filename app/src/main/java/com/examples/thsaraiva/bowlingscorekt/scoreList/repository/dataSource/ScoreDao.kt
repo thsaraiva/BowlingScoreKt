@@ -12,11 +12,11 @@ interface ScoreDao {
     @Insert(onConflict = REPLACE)
     fun insert(score: Score)
 
-    @Delete
-    fun delete(score: Score)
-
     @Query("DELETE FROM ${Score.TABLE_NAME}")
     fun deleteAll()
+
+    @Delete
+    fun delete(score: Score)
 
     @Update
     fun update(score: Score)

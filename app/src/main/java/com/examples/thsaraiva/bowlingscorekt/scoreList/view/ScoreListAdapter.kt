@@ -10,7 +10,7 @@ import com.examples.thsaraiva.bowlingscorekt.scoreList.repository.dataSource.Sco
 
 class ScoreListAdapter : RecyclerView.Adapter<ScoreListAdapter.WordItemViewHolder>() {
 
-    private var wordList: List<Score> = listOf()
+    private var scoreList: List<Score> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScoreListAdapter.WordItemViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.score_list_item_layout, parent, false)
@@ -18,16 +18,20 @@ class ScoreListAdapter : RecyclerView.Adapter<ScoreListAdapter.WordItemViewHolde
     }
 
     override fun getItemCount(): Int {
-        return wordList.count()
+        return scoreList.count()
     }
 
     override fun onBindViewHolder(holder: ScoreListAdapter.WordItemViewHolder, position: Int) {
-        holder.bind(wordList[position])
+        holder.bind(scoreList[position])
     }
 
-    fun setWords(newWordList: List<Score>) {
-        this.wordList = newWordList
+    fun setScores(newScoresList: List<Score>) {
+        this.scoreList = newScoresList
         notifyDataSetChanged()
+    }
+
+    fun getScoreAtPosition(position: Int): Score {
+        return scoreList[position]
     }
 
     class WordItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {

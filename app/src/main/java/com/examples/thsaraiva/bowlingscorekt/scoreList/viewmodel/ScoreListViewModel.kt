@@ -34,12 +34,12 @@ class ScoreListViewModel(private val repository: ScoreListRepository) : ViewMode
         repository.insert(score, transactionCompleteCallback)
     }
 
-    fun delete(score: Score) {
-        repository.delete(score, transactionCompleteCallback)
-    }
-
     fun deleteAll() {
         repository.deleteAll(transactionCompleteCallback)
+    }
+
+    fun delete(score: Score) {
+        repository.delete(score, transactionCompleteCallback)
     }
 
     fun update(score: Score) {

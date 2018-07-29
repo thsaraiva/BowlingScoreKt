@@ -9,7 +9,11 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_SWIPE
+import androidx.recyclerview.widget.ItemTouchHelper.RIGHT
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.examples.thsaraiva.bowlingscorekt.R
 import com.examples.thsaraiva.bowlingscorekt.addNewScore.model.NewScore
 import com.examples.thsaraiva.bowlingscorekt.addNewScore.view.NewScoreActivity
@@ -44,7 +48,7 @@ class ScoreListActivity : AppCompatActivity() {
         with(scoreViewModel) {
             scoreList.observe(this@ScoreListActivity, Observer {
                 no_results_place_holder.visibility = GONE
-                (scoresRecyclerView.adapter as ScoreListAdapter).setWords(it)
+                (scoresRecyclerView.adapter as ScoreListAdapter).setScores(it)
                 scoresRecyclerView.visibility = VISIBLE
             })
             noDataAvailable.observe(this@ScoreListActivity, Observer {
@@ -57,7 +61,12 @@ class ScoreListActivity : AppCompatActivity() {
         }
 
         scoresRecyclerView.layoutManager = LinearLayoutManager(this)
-        scoresRecyclerView.adapter = ScoreListAdapter()
+        val adapter = ScoreListAdapter()
+        scoresRecyclerView.adapter = adapter
+
+        ItemTouchHelper(SwipeToDismissListener {
+            scoreViewModel.delete(adapter.getScoreAtPosition(it))
+        }).attachToRecyclerView(scoresRecyclerView)
 
         fab.setOnClickListener {
             startActivityForResult(Intent(this@ScoreListActivity, NewScoreActivity::class.java), NEW_SCORE_ACTIVITY_REQUEST_CODE)
@@ -90,6 +99,18 @@ class ScoreListActivity : AppCompatActivity() {
         } else {
             longToast(R.string.empty_not_saved)
         }
+    }
+
+    private class SwipeToDismissListener(private val onSwipeAction: (Int) -> Unit) : ItemTouchHelper.Callback() {
+        override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) = makeFlag(ACTION_STATE_SWIPE, RIGHT)
+
+        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) = false
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            if (direction == ItemTouchHelper.RIGHT)
+                onSwipeAction(viewHolder.adapterPosition)
+        }
+
     }
 }
 
