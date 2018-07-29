@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = Score.TABLE_NAME)
-class Score(@PrimaryKey(autoGenerate = true) @ColumnInfo(name = ID_COLUMN_NAME) var id: Long? = null,
+data class Score(@PrimaryKey(autoGenerate = true) @ColumnInfo(name = ID_COLUMN_NAME) var id: Long? = null,
             @ColumnInfo(name = SCORE_STRING_COLUMN_NAME) var score: String,
             @ColumnInfo(name = COMPUTED_SCORE_COLUMN_NAME) var computedScore: Int) {
 

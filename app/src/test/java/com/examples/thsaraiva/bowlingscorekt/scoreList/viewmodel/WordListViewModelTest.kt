@@ -12,7 +12,7 @@ class WordListViewModelTest {
 
     @Rule
     @JvmField
-    var instantTaskExecutorRule: InstantTaskExecutorRule = InstantTaskExecutorRule()
+    var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var repository: ScoreListRepository
     private lateinit var viewModel: ScoreListViewModel

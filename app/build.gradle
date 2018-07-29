@@ -74,7 +74,9 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$ktx_version"
 
     //Reactive UI
-    implementation "com.jakewharton.rxbinding:rxbinding-kotlin:0.4.0"
+    implementation("com.jakewharton.rxbinding:rxbinding-kotlin:0.4.0") {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
 
     //###################### Test Dependencies ######################
 
@@ -87,15 +89,22 @@ dependencies {
     //Mockito
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
     testImplementation "org.mockito:mockito-core:$mockito_version"
-    testImplementation "org.mockito:mockito-inline:+"
-    androidTestImplementation "org.mockito:mockito-android:+"
+    testImplementation "org.mockito:mockito-inline:2.20.1"
+    androidTestImplementation "org.mockito:mockito-android:2.20.1"
 
     //Arch Components Testing Lib
+    //Arch Components Testing Lib
     testImplementation "androidx.arch.core:core-testing:$arch_components_version"
+    androidTestImplementation "androidx.arch.core:core-testing:$arch_components_version"
 
     //Room-testing
-//    androidTestImplementation "androidx.room:room-testing:$arch_components_version"
+    androidTestImplementation "androidx.room:room-testing:$arch_components_version"
 
-//    androidTestImplementation "com.android.support.test:runner:1.0.2"
-//    androidTestImplementation "com.android.support.test.espresso:espresso-core:3.0.2"
+//    androidTestImplementation "androidx.test:runner:1.1.0-alpha4"
+//    androidTestImplementation "androidx.test:rules:1.1.0-alpha4"
+
+    androidTestImplementation "com.android.support.test:runner:1.0.2"
+    androidTestImplementation "com.android.support.test:rules:1.0.2"
+
+    androidTestImplementation "androidx.annotation:annotation:1.0.0-beta01"
 }
