@@ -22,7 +22,7 @@ class ScoreDaoTest {
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     companion object {
-        private val SCORE1 = Score(score = "MY SCORE STRING 1", computedScore = 100)
+        private var SCORE1 = Score(score = "MY SCORE STRING 1", computedScore = 100)
         private val SCORE2 = Score(score = "MY SCORE STRING 2", computedScore = 200)
     }
 
@@ -70,17 +70,41 @@ class ScoreDaoTest {
     }
 
     @Test
-    fun testDeletingScoreFromDb() {
-        assertTrue(scoreDao.getAllScores().isEmpty())
+    fun testDeletingAllScoresFromDb() {
+        assertTrue("Initial list should be empty", scoreDao.getAllScores().isEmpty())
         scoreDao.insert(SCORE1)
         scoreDao.insert(SCORE2)
-        assertTrue(scoreDao.getAllScores().size == 2)
-        scoreDao.delete(SCORE1)
-        Thread.sleep(2000)
+        assertTrue("List before deletion should have size 2", scoreDao.getAllScores().size == 2)
+        scoreDao.deleteAll()
         val newScoreList = scoreDao.getAllScores()
-        assertTrue(newScoreList.size == 1)
+        assertTrue("List after deleting all Scores should be empty", newScoreList.isEmpty())
+    }
+
+    @Test
+    fun testDeletingScoreFromDb() {
+        assertTrue("Initial list should be empty", scoreDao.getAllScores().isEmpty())
+        scoreDao.insert(SCORE1)
+        scoreDao.insert(SCORE2)
+        assertTrue("List before deletion should have size 2", scoreDao.getAllScores().size == 2)
+        scoreDao.delete(SCORE1)
+        val newScoreList = scoreDao.getAllScores()
+        assertTrue("List after deletion should have size 1", newScoreList.size == 1)
         assertEquals(SCORE2.computedScore, newScoreList[0].computedScore)
         assertEquals(SCORE2.score, newScoreList[0].score)
+    }
+
+    @Test
+    fun testUpdatingScoreFromDb() {
+        assertTrue("Initial list should be empty", scoreDao.getAllScores().isEmpty())
+        scoreDao.insert(SCORE1)
+        var currentScores = scoreDao.getAllScores()
+        assertTrue("List before update should have size 1", currentScores.size == 1)
+        assertEquals("Item computedScore property should be the same", currentScores[0].computedScore, SCORE1.computedScore)
+        SCORE1.computedScore = 500
+        scoreDao.update(SCORE1)
+        currentScores = scoreDao.getAllScores()
+        assertTrue("List after update should still have size 1", currentScores.size == 1)
+        assertEquals(SCORE1.computedScore, 500)
     }
 
 }
