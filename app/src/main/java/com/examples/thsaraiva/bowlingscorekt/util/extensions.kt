@@ -22,3 +22,14 @@ fun Char.getIntValue(): Int {
         else -> throw InvalidPropertiesFormatException("This character has no Int value")
     }
 }
+
+fun <T, R> Collection<T>.accumulate(
+        initial: R,
+        combine: (acc: R, nextElement: T, nextElementPosition: Int) -> R
+): R {
+    var accumulator: R = initial
+    for (i in 0 until this.size) {
+        accumulator = combine(accumulator, this.elementAt(i), i)
+    }
+    return accumulator
+}

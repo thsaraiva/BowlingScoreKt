@@ -9,7 +9,7 @@ class ScoreListRepository(private val dataSource: ScoreDao) {
 
     interface LoadScoresCallback {
 
-        fun onWordsLoaded(words: List<Score>)
+        fun onScoresLoaded(scores: List<Score>)
 
         fun onDataNotAvailable()
     }
@@ -20,30 +20,30 @@ class ScoreListRepository(private val dataSource: ScoreDao) {
 
     }
 
-    fun getAllWords(callback: LoadScoresCallback) {
+    fun getAllScores(callback: LoadScoresCallback) {
         doAsync {
-            val words = dataSource.getAllScores()
+            val scores = dataSource.getAllScores()
             uiThread {
-                if (words.isEmpty())
+                if (scores.isEmpty())
                     callback.onDataNotAvailable()
                 else
-                    callback.onWordsLoaded(words)
+                    callback.onScoresLoaded(scores)
             }
         }
     }
 
-    fun insert(word: Score, callback: TransactionCompleteCallback) {
+    fun insert(score: Score, callback: TransactionCompleteCallback) {
         doAsync {
-            dataSource.insert(word)
+            dataSource.insert(score)
             uiThread {
                 callback.onTransactionComplete()
             }
         }
     }
 
-    fun delete(word: Score, callback: TransactionCompleteCallback) {
+    fun delete(score: Score, callback: TransactionCompleteCallback) {
         doAsync {
-            dataSource.delete(word)
+            dataSource.delete(score)
             uiThread {
                 callback.onTransactionComplete()
             }
@@ -59,9 +59,9 @@ class ScoreListRepository(private val dataSource: ScoreDao) {
         }
     }
 
-    fun update(word: Score, callback: TransactionCompleteCallback) {
+    fun update(score: Score, callback: TransactionCompleteCallback) {
         doAsync {
-            dataSource.update(word)
+            dataSource.update(score)
             uiThread {
                 callback.onTransactionComplete()
             }

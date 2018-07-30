@@ -8,7 +8,7 @@ import com.nhaarman.mockitokotlin2.*
 import org.junit.Rule
 import org.junit.Test
 
-class WordListViewModelTest {
+class ScoreListViewModelTest {
 
     @Rule
     @JvmField
@@ -18,90 +18,90 @@ class WordListViewModelTest {
     private lateinit var viewModel: ScoreListViewModel
 
     @Test
-    fun testGetAllWords_NoResults() {
+    fun testGetAllScores_NoResults() {
         repository = mock()
-        val wordListObserver = mock() as Observer<List<Score>>
+        val scoreListObserver = mock() as Observer<List<Score>>
         val noDataAvailableObserver = mock() as Observer<Boolean>
 
         with(ScoreListViewModel(repository)) {
             viewModel = this
-            scoreList.observeForever(wordListObserver)
+            scoreList.observeForever(scoreListObserver)
             noDataAvailable.observeForever(noDataAvailableObserver)
             getAllScores()
         }
 
         argumentCaptor<ScoreListRepository.LoadScoresCallback> {
-            verify(repository, times(1)).getAllWords(capture())
+            verify(repository, times(1)).getAllScores(capture())
             this.firstValue.onDataNotAvailable()
-            verify(wordListObserver, never()).onChanged(any())
+            verify(scoreListObserver, never()).onChanged(any())
             verify(noDataAvailableObserver, times(1)).onChanged(true)
         }
 
         with(viewModel)
         {
-            scoreList.removeObserver(wordListObserver)
+            scoreList.removeObserver(scoreListObserver)
             noDataAvailable.removeObserver(noDataAvailableObserver)
         }
     }
 
     @Test
-    fun testGetAllWords_WithResults() {
+    fun testGetAllScores_WithResults() {
         repository = mock()
-        val wordListObserver = mock() as Observer<List<Score>>
+        val scoreListObserver = mock() as Observer<List<Score>>
         val noDataAvailableObserver = mock() as Observer<Boolean>
 
         with(ScoreListViewModel(repository)) {
             viewModel = this
-            scoreList.observeForever(wordListObserver)
+            scoreList.observeForever(scoreListObserver)
             noDataAvailable.observeForever(noDataAvailableObserver)
             getAllScores()
         }
 
         argumentCaptor<ScoreListRepository.LoadScoresCallback> {
-            verify(repository, times(1)).getAllWords(capture())
+            verify(repository, times(1)).getAllScores(capture())
             val expectedList = listOf(Score(score = "Teste", computedScore = 300))
-            this.firstValue.onWordsLoaded(expectedList)
+            this.firstValue.onScoresLoaded(expectedList)
             verify(noDataAvailableObserver, never()).onChanged(any())
-            verify(wordListObserver, times(1)).onChanged(expectedList)
+            verify(scoreListObserver, times(1)).onChanged(expectedList)
         }
 
         with(viewModel)
         {
-            scoreList.removeObserver(wordListObserver)
+            scoreList.removeObserver(scoreListObserver)
             noDataAvailable.removeObserver(noDataAvailableObserver)
         }
     }
 
     @Test
-    fun `inserting Score in database should invoke getAllWords method`() {
+    fun `inserting Score in database should invoke getAllScores method`() {
         repository = mock()
-        val wordListObserver = mock() as Observer<List<Score>>
+        val scoreListObserver = mock() as Observer<List<Score>>
         val noDataAvailableObserver = mock() as Observer<Boolean>
 
-        val expectedWord = Score(score = "Teste", computedScore = 300)
+        val expectedScore = Score(score = "Teste", computedScore = 300)
         with(ScoreListViewModel(repository)) {
             viewModel = this
-            scoreList.observeForever(wordListObserver)
+            scoreList.observeForever(scoreListObserver)
             noDataAvailable.observeForever(noDataAvailableObserver)
-            insert(expectedWord)
+            insert(expectedScore)
         }
 
         val callbackCaptor = argumentCaptor<ScoreListRepository.TransactionCompleteCallback>()
         verify(repository, times(1)).insert(any(), callbackCaptor.capture())
         callbackCaptor.firstValue.onTransactionComplete()
 
-        val expectedList = listOf(expectedWord)
+        val expectedList = listOf(expectedScore)
         argumentCaptor<ScoreListRepository.LoadScoresCallback> {
-            verify(repository, times(1)).getAllWords(capture())
-            this.firstValue.onWordsLoaded(expectedList)
+            verify(repository, times(1)).getAllScores(capture())
+            this.firstValue.onScoresLoaded(expectedList)
         }
 
         verify(noDataAvailableObserver, never()).onChanged(any())
-        verify(wordListObserver, times(1)).onChanged(expectedList)
+        verify(scoreListObserver, times(1)).onChanged(expectedList)
 
         with(viewModel)
         {
-            scoreList.removeObserver(wordListObserver)
+            scoreList.removeObserver(scoreListObserver)
             noDataAvailable.removeObserver(noDataAvailableObserver)
         }
     }

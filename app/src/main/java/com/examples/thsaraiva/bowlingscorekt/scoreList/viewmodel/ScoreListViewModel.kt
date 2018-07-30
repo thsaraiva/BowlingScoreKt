@@ -11,7 +11,7 @@ class ScoreListViewModel(private val repository: ScoreListRepository) : ViewMode
     var noDataAvailable = MutableLiveData<Boolean>()
 
     private val loadScoresCallback = object : ScoreListRepository.LoadScoresCallback {
-        override fun onWordsLoaded(scores: List<Score>) {
+        override fun onScoresLoaded(scores: List<Score>) {
             scoreList.value = scores
         }
 
@@ -27,7 +27,7 @@ class ScoreListViewModel(private val repository: ScoreListRepository) : ViewMode
     }
 
     fun getAllScores() {
-        repository.getAllWords(loadScoresCallback)
+        repository.getAllScores(loadScoresCallback)
     }
 
     fun insert(score: Score) {

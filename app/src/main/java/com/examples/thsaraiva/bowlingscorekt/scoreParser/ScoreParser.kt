@@ -5,6 +5,48 @@ import main.model.SpareFrame
 import main.model.StrikeFrame
 import main.util.*
 
+class ScoreParserAccumulator : BaseScoreParser() {
+
+    fun getScore(score: String): Int {
+        initialParsing(score)
+
+        val extraBallsArray = extraBalls.toCharArray()
+        val ballsList = mainScore.replace("|", "", true).toCharArray().toList()
+
+        return ballsList.accumulate(0) { acc: Int, element: Char, position: Int ->
+            val currentBall = when {
+                element.isSpare() -> {
+                    if (position + 1 < ballsList.size) 10 - ballsList[position - 1].getIntValue() + ballsList[position + 1].getIntValue()
+                    else 10 - ballsList[position - 1].getIntValue() + extraBallsArray[0].getIntValue()
+                }
+                element.isStrike() -> {
+                    var nextBall: Char
+                    var ballAfterNext: Char
+                    when {
+                        position + 1 >= ballsList.size -> {
+                            nextBall = extraBallsArray[0]
+                            ballAfterNext = extraBallsArray[1]
+                        }
+                        position + 1 < ballsList.size && position + 2 >= ballsList.size -> {
+                            nextBall = ballsList[position + 1]
+                            ballAfterNext = extraBallsArray[0]
+                        }
+                        else -> {
+                            nextBall = ballsList[position + 1]
+                            ballAfterNext = ballsList[position + 2]
+                        }
+                    }
+                    if (ballAfterNext.isSpare()) element.getIntValue() + nextBall.getIntValue() + 10 - nextBall.getIntValue()
+                    else element.getIntValue() + nextBall.getIntValue() + ballAfterNext.getIntValue()
+                }
+                else -> element.getIntValue()
+            }
+            acc + currentBall
+        }
+    }
+}
+
+
 class ScoreParserArray : BaseScoreParser() {
     private lateinit var ballsArray: CharArray
     private var extraBallsNumber = 0

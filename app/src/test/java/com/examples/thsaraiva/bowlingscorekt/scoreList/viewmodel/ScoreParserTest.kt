@@ -1,6 +1,7 @@
 package test
 
 import main.ScoreParser
+import main.ScoreParserAccumulator
 import main.ScoreParserArray
 import main.ScoreParserReverse
 import org.junit.Assert.assertEquals
@@ -12,12 +13,14 @@ class ScoreParserTest {
     private lateinit var scoreParser: ScoreParser
     private lateinit var scoreParserReverse: ScoreParserReverse
     private lateinit var scoreParserArray: ScoreParserArray
+    private lateinit var scoreParserAccumulator: ScoreParserAccumulator
 
     @Before
     fun beforeTest() {
         scoreParser = ScoreParser()
         scoreParserReverse = ScoreParserReverse()
         scoreParserArray = ScoreParserArray()
+        scoreParserAccumulator = ScoreParserAccumulator()
     }
 
     @Test
@@ -221,6 +224,56 @@ class ScoreParserTest {
         val framesResults = "X|-/|X|--|5/|-/|X|X|X|X||12"
         val expectedResult = 174
         val finalScore = scoreParserArray.getScore(framesResults)
+        assertEquals(expectedResult, finalScore)
+    }
+
+    //################ ACCUMULATOR ALGORITHM ################
+
+    @Test
+    fun parsingSimpleScoreGame_Accumulator() {
+        val framesResults = "54|54|54|54|54|54|54|54|54|54||"
+        val expectedResult = 90
+        val finalScore = scoreParserAccumulator.getScore(framesResults)
+        assertEquals(expectedResult, finalScore)
+    }
+
+    @Test
+    fun parsingOnly5sAndMissesScoreGame_Accumulator() {
+        val framesResults = "5-|5-|5-|5-|5-|5-|5-|5-|5-|5-||"
+        val expectedResult = 50
+        val finalScore = scoreParserAccumulator.getScore(framesResults)
+        assertEquals(expectedResult, finalScore)
+    }
+
+    @Test
+    fun parsingScoreWithSparesScoreGame_Accumulator() {
+        val framesResults = "5/|54|54|5/|54|54|54|54|54|5/||5"
+        val expectedResult = 108
+        val finalScore = scoreParserAccumulator.getScore(framesResults)
+        assertEquals(expectedResult, finalScore)
+    }
+
+    @Test
+    fun parsingScoreWithStrikesScoreGame_Accumulator() {
+        val framesResults = "X|11|11|X|11|11|11|11|11|X||X-"
+        val expectedResult = 58
+        val finalScore = scoreParserAccumulator.getScore(framesResults)
+        assertEquals(expectedResult, finalScore)
+    }
+
+    @Test
+    fun parsingScoreWithStrikesAndSparesScoreGame_Accumulator() {
+        val framesResults = "X|5/|5/|X|54|54|54|54|54|X||-/"
+        val expectedResult = 139
+        val finalScore = scoreParserAccumulator.getScore(framesResults)
+        assertEquals(expectedResult, finalScore)
+    }
+
+    @Test
+    fun parsingScoreWithStrikesAndSparesAndMissesScoreGame_Accumulator() {
+        val framesResults = "X|-/|X|--|5/|-/|X|X|X|X||12"
+        val expectedResult = 174
+        val finalScore = scoreParserAccumulator.getScore(framesResults)
         assertEquals(expectedResult, finalScore)
     }
 }
