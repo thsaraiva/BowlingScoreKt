@@ -85,12 +85,11 @@ class ScoreDaoTest {
         assertTrue("Initial list should be empty", scoreDao.getAllScores().isEmpty())
         scoreDao.insert(SCORE1)
         scoreDao.insert(SCORE2)
-        assertTrue("List before deletion should have size 2", scoreDao.getAllScores().size == 2)
+        assertEquals("List before deletion should have size 2", 2, scoreDao.getAllScores().size)
         scoreDao.delete(SCORE1)
         val newScoreList = scoreDao.getAllScores()
-        assertTrue("List after deletion should have size 1", newScoreList.size == 1)
-        assertEquals(SCORE2.computedScore, newScoreList[0].computedScore)
-        assertEquals(SCORE2.score, newScoreList[0].score)
+        assertEquals("List after deletion should have size 1", 1, newScoreList.size)
+        assertEquals(SCORE2, newScoreList[0])
     }
 
     @Test
@@ -104,7 +103,7 @@ class ScoreDaoTest {
         scoreDao.update(SCORE1)
         currentScores = scoreDao.getAllScores()
         assertTrue("List after update should still have size 1", currentScores.size == 1)
-        assertEquals(SCORE1.computedScore, 500)
+        assertEquals(currentScores[0], SCORE1)
     }
 
 }
